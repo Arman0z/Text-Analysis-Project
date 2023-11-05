@@ -1,6 +1,7 @@
 from imdb import Cinemagoer
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import pprint
 #nltk.download('vader_lexicon')
 
 #* Objective: Compare popular movie series's based on overall movie sentiment to find the most
@@ -9,7 +10,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 ia = Cinemagoer() # open the movie database
 
 
-print(ia.search_movie("Harry Potter"))
+# print(ia.search_movie("Harry Potter"))
 
 print("\n\nBEGINNING\n\n")
 
@@ -113,9 +114,29 @@ hp6_score = del_dict_item(hp6_score)
 hp7_score = del_dict_item(hp7_score)
 hp8_score = del_dict_item(hp8_score)
 
-movies = [
-    hp1_score, hp2_score, hp3_score, hp4_score, hp5_score, hp6_score, hp7_score, hp8_score
+harry_potter = [
+    ('Harry Potter 1', hp1_score), ('Harry Potter 2', hp2_score), ('Harry Potter 3', hp3_score), ('Harry Potter 4', hp4_score), ('Harry Potter 5',hp5_score), ('Harry Potter 6', hp6_score), ('Harry Potter 7', hp7_score), ('Harry Potter 8', hp8_score)
 ]
+
+
+
+# pprint.pprint(harry_potter)
+
+neg_list = []
+neu_list = []
+pos_list = []
+for title, sentiment in harry_potter:
+    neg_list.append({sentiment['neg']:title})
+    neu_list.append({sentiment['neu']:title})
+    pos_list.append({sentiment['pos']:title})
+
+neg_list_sorted = sorted(neg_list, key=lambda d: list(d.values())[0], reverse=True)
+neu_list_sorted = sorted(neu_list, key=lambda d: list(d.values())[0], reverse=True)
+pos_list_sorted = sorted(pos_list, key=lambda d: list(d.values())[0], reverse=True)
+
+print("Negative values sorted:", neg_list_sorted)
+print("Neutral values sorted:", neu_list_sorted)
+print("Positive values sorted:", pos_list_sorted)
 
 # print(hp1_score)
 
