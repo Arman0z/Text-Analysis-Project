@@ -9,25 +9,20 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 ia = Cinemagoer() # open the movie database
 
 
-hp_movies = ia.search_movie("Harry Potter")
+print(ia.search_movie("Harry Potter"))
+
+print("\n\nBEGINNING\n\n")
 
 # print(hp_movies[:10]) # Search IMDB for all Harry Potter related movies & # Gather movie IDs
-hp1 = ia.get_movie("0241527", info = ["reviews"])
-hp1 = hp1.get('reviews', [])
+hp1 = ia.get_movie("0241527",info = ["reviews"])
 hp2 = ia.get_movie("0295297",info = ["reviews"])
-hp2 = hp2.get('reviews', [])
 hp3 = ia.get_movie("0304141",info = ["reviews"])
-hp3 = hp3.get('reviews', [])
 hp4 = ia.get_movie("0330373",info = ["reviews"])
-hp4 = hp4.get('reviews', [])
 hp5 = ia.get_movie("0373889",info = ["reviews"])
-hp5 = hp5.get('reviews', [])
 hp6 = ia.get_movie("0417741",info = ["reviews"])
-hp6 = hp6.get('reviews', [])
 hp7 = ia.get_movie("0926084",info = ["reviews"])
-hp7 = hp7.get('reviews', [])
 hp8 = ia.get_movie("1201607",info = ["reviews"])
-hp8 = hp8.get('reviews', [])
+
 
 
 """
@@ -36,9 +31,13 @@ the movie title as the key and movie ID as the value to make this data aggregati
 recommended using the (re) library but it caused errors when I tried it so I just entered the info
 manually :P
 """
-# # Print reviews
-# for review in hp1_r:
-#     print(f"{review['content']}\n")
+
+def get_info(movie, info = 'reviews'):
+    """
+    collects movie info (default = reviews)
+    """
+    return movie.get(info, [])
+
 
 def get_review_content(movie):
     """
@@ -46,8 +45,32 @@ def get_review_content(movie):
     """
     for review in movie:
         return(review['content'])
-    
+
+
+# for movie in range(len(hp_movies)):
+#     movie = get_info(movie)
+#     movie = SentimentIntensityAnalyzer().polarity_scores(get_review_content(movie))
+
+# print(hp_movies)
+
+hp1 = get_info(hp1)
+hp2 = get_info(hp2)
+hp3 = get_info(hp3)
+hp4 = get_info(hp4)
+hp5 = get_info(hp5)
+hp6 = get_info(hp6)
+hp7 = get_info(hp7)
+hp8 = get_info(hp8)
+
+# # Print reviews
+# for review in hp1_r:
+#     print(f"{review['content']}\n")
+
+
 # print (get_review_content(hp1))
+
+# for movie in hp_movies:
+
 
 hp1_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp1))
 hp2_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp2))
@@ -58,19 +81,53 @@ hp6_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp6)
 hp7_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp7))
 hp8_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp8))
 
-print(f"Title 1{hp1_score}")
-print(f"Title 2{hp2_score}")
-print(f"Title 3{hp3_score}")
-print(f"Title 4{hp4_score}")
-print(f"Title 5{hp5_score}")
-print(f"Title 6{hp6_score}")
-print(f"Title 7{hp7_score}")
-print(f"Title 8{hp8_score}")
 
 
-d = dict()
-for sentiment, score in hp1_score.items():
-    for item in hp1_score.items():
-        d[item] = score, sentiment
+def del_dict_item(dict, item = 'compound'):
+    """
+    Removes the "compound" key from a dictionary
+    """
+    del dict['compound']
+    return dict
 
-print (d)
+x = 1
+for dict in range(8):
+    pass
+
+
+# print(f"Title 1{hp1_score}")
+# print(f"Title 2{hp2_score}")
+# print(f"Title 3{hp3_score}")
+# print(f"Title 4{hp4_score}")
+# print(f"Title 5{hp5_score}")
+# print(f"Title 6{hp6_score}")
+# print(f"Title 7{hp7_score}")
+# print(f"Title 8{hp8_score}")
+
+hp1_score = del_dict_item(hp1_score)
+hp2_score = del_dict_item(hp2_score)
+hp3_score = del_dict_item(hp3_score)
+hp4_score = del_dict_item(hp4_score)
+hp5_score = del_dict_item(hp5_score)
+hp6_score = del_dict_item(hp6_score)
+hp7_score = del_dict_item(hp7_score)
+hp8_score = del_dict_item(hp8_score)
+
+movies = [
+    hp1_score, hp2_score, hp3_score, hp4_score, hp5_score, hp6_score, hp7_score, hp8_score
+]
+
+# print(hp1_score)
+
+# for xxx in h
+# pairs = [(score, sentiment) for sentiment, score in hp1_score.items()]
+# print (pairs)
+
+
+
+# d = dict()
+# for sentiment, score in hp1_score.items():
+#     for item in hp1_score.items():
+#         d[score] = sentiment
+# print (d)
+# print(sorted(d))
