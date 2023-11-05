@@ -24,7 +24,7 @@ hp6 = ia.get_movie("0417741",info = ["reviews"])
 hp7 = ia.get_movie("0926084",info = ["reviews"])
 hp8 = ia.get_movie("1201607",info = ["reviews"])
 
-
+hp1r = ia.get_movie("0241527")
 
 """
 I tried using ChatGPT to find a way to pull the harry potter movie info into a dictionary containing
@@ -47,6 +47,9 @@ def get_review_content(movie):
     for review in movie:
         return(review['content'])
 
+print (f"before{hp1r}")
+hp1r = get_info(hp1r, 'rating')
+print (f"after{hp1r}")
 
 # for movie in range(len(hp_movies)):
 #     movie = get_info(movie)
