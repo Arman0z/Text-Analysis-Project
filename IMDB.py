@@ -1,30 +1,30 @@
 from imdb import Cinemagoer
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import pprint
-#nltk.download('vader_lexicon')
 
-#* Objective: Compare popular movie series's based on overall movie sentiment to find the most
-#* family friendly option for movie night
+# * Objective: Compare popular movie series's based on overall movie sentiment to find the most
+# * family friendly option for movie night
 
-ia = Cinemagoer() # open the movie database
+ia = Cinemagoer()  # open the movie database
 
-
-# print(ia.search_movie("Harry Potter"))
-
-print("\n\nBEGINNING\n\n")
-
-# print(hp_movies[:10]) # Search IMDB for all Harry Potter related movies & # Gather movie IDs
-hp1 = ia.get_movie("0241527",info = ["reviews"])
-hp2 = ia.get_movie("0295297",info = ["reviews"])
-hp3 = ia.get_movie("0304141",info = ["reviews"])
-hp4 = ia.get_movie("0330373",info = ["reviews"])
-hp5 = ia.get_movie("0373889",info = ["reviews"])
-hp6 = ia.get_movie("0417741",info = ["reviews"])
-hp7 = ia.get_movie("0926084",info = ["reviews"])
-hp8 = ia.get_movie("1201607",info = ["reviews"])
+# Gathering Harry Potter Movie Data for IMDB reviews and ratings
+hp1 = ia.get_movie("0241527", info=["reviews"])
+hp2 = ia.get_movie("0295297", info=["reviews"])
+hp3 = ia.get_movie("0304141", info=["reviews"])
+hp4 = ia.get_movie("0330373", info=["reviews"])
+hp5 = ia.get_movie("0373889", info=["reviews"])
+hp6 = ia.get_movie("0417741", info=["reviews"])
+hp7 = ia.get_movie("0926084", info=["reviews"])
+hp8 = ia.get_movie("1201607", info=["reviews"])
 
 hp1r = ia.get_movie("0241527")
+hp2r = ia.get_movie("0295297")
+hp3r = ia.get_movie("0304141")
+hp4r = ia.get_movie("0330373")
+hp5r = ia.get_movie("0373889")
+hp6r = ia.get_movie("0417741")
+hp7r = ia.get_movie("0926084")
+hp8r = ia.get_movie("1201607")
 
 """
 I tried using ChatGPT to find a way to pull the harry potter movie info into a dictionary containing
@@ -33,7 +33,8 @@ recommended using the (re) library but it caused errors when I tried it so I jus
 manually :P
 """
 
-def get_info(movie, info = 'reviews'):
+
+def get_info(movie, info="reviews"):
     """
     collects movie info (default = reviews)
     """
@@ -45,17 +46,17 @@ def get_review_content(movie):
     Returns the reviews for a specified movie
     """
     for review in movie:
-        return(review['content'])
+        return review["content"]
 
-print (f"before{hp1r}")
-hp1r = get_info(hp1r, 'rating')
-print (f"after{hp1r}")
 
-# for movie in range(len(hp_movies)):
-#     movie = get_info(movie)
-#     movie = SentimentIntensityAnalyzer().polarity_scores(get_review_content(movie))
-
-# print(hp_movies)
+hp1r = get_info(hp1r, "rating")
+hp2r = get_info(hp2r, "rating")
+hp3r = get_info(hp3r, "rating")
+hp4r = get_info(hp4r, "rating")
+hp5r = get_info(hp5r, "rating")
+hp6r = get_info(hp6r, "rating")
+hp7r = get_info(hp7r, "rating")
+hp8r = get_info(hp8r, "rating")
 
 hp1 = get_info(hp1)
 hp2 = get_info(hp2)
@@ -66,16 +67,20 @@ hp6 = get_info(hp6)
 hp7 = get_info(hp7)
 hp8 = get_info(hp8)
 
-# # Print reviews
-# for review in hp1_r:
-#     print(f"{review['content']}\n")
+# First rank all the Harry Potter Movies based on their actual IMDB Ratings
+harry_potter_ranking = [
+    (hp1r, "Harry Potter #1"),
+    (hp2r, "Harry Potter #2"),
+    (hp3r, "Harry Potter #3"),
+    (hp4r, "Harry Potter #4"),
+    (hp5r, "Harry Potter #5"),
+    (hp6r, "Harry Potter #6"),
+    (hp7r, "Harry Potter #7"),
+    (hp8r, "Harry Potter #8"),
+]
+harry_potter_ranking = sorted(harry_potter_ranking, key=lambda a: a[0], reverse=True)
 
-
-# print (get_review_content(hp1))
-
-# for movie in hp_movies:
-
-
+# Next execute sentiment analysis for the IMDB reviews for each Harry Potter Movie
 hp1_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp1))
 hp2_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp2))
 hp3_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp3))
@@ -86,27 +91,14 @@ hp7_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp7)
 hp8_score = SentimentIntensityAnalyzer().polarity_scores(get_review_content(hp8))
 
 
-
-def del_dict_item(dict, item = 'compound'):
+# Delete unnecessary dict item
+def del_dict_item(dict, item="compound"):
     """
     Removes the "compound" key from a dictionary
     """
-    del dict['compound']
+    del dict["compound"]
     return dict
 
-x = 1
-for dict in range(8):
-    pass
-
-
-# print(f"Title 1{hp1_score}")
-# print(f"Title 2{hp2_score}")
-# print(f"Title 3{hp3_score}")
-# print(f"Title 4{hp4_score}")
-# print(f"Title 5{hp5_score}")
-# print(f"Title 6{hp6_score}")
-# print(f"Title 7{hp7_score}")
-# print(f"Title 8{hp8_score}")
 
 hp1_score = del_dict_item(hp1_score)
 hp2_score = del_dict_item(hp2_score)
@@ -117,41 +109,80 @@ hp6_score = del_dict_item(hp6_score)
 hp7_score = del_dict_item(hp7_score)
 hp8_score = del_dict_item(hp8_score)
 
+# Add titles
+hp1_score["title"] = "Harry Potter #1"
+hp2_score["title"] = "Harry Potter #2"
+hp3_score["title"] = "Harry Potter #3"
+hp4_score["title"] = "Harry Potter #4"
+hp5_score["title"] = "Harry Potter #5"
+hp6_score["title"] = "Harry Potter #6"
+hp7_score["title"] = "Harry Potter #7"
+hp8_score["title"] = "Harry Potter #8"
+
 harry_potter = [
-    ('Harry Potter 1', hp1_score), ('Harry Potter 2', hp2_score), ('Harry Potter 3', hp3_score), ('Harry Potter 4', hp4_score), ('Harry Potter 5',hp5_score), ('Harry Potter 6', hp6_score), ('Harry Potter 7', hp7_score), ('Harry Potter 8', hp8_score)
+    hp1_score,
+    hp2_score,
+    hp3_score,
+    hp4_score,
+    hp5_score,
+    hp6_score,
+    hp7_score,
+    hp8_score,
 ]
 
+# Sort movies in decending order based on each sentiment score
+harry_potter = sorted(harry_potter, key=lambda a: a["neg"])
+
+hp_reviews_neg = {}
+hp_reviews_neg["Rank 1"] = harry_potter[0]["title"]
+hp_reviews_neg["Rank 2"] = harry_potter[1]["title"]
+hp_reviews_neg["Rank 3"] = harry_potter[2]["title"]
+hp_reviews_neg["Rank 4"] = harry_potter[3]["title"]
+hp_reviews_neg["Rank 5"] = harry_potter[4]["title"]
+hp_reviews_neg["Rank 6"] = harry_potter[-3]["title"]
+hp_reviews_neg["Rank 7"] = harry_potter[-2]["title"]
+hp_reviews_neg["Rank 8"] = harry_potter[-1]["title"]
+
+harry_potter = sorted(harry_potter, key=lambda a: a["neu"], reverse=True)
+
+hp_reviews_neu = {}
+hp_reviews_neu["Rank 1"] = harry_potter[0]["title"]
+hp_reviews_neu["Rank 2"] = harry_potter[1]["title"]
+hp_reviews_neu["Rank 3"] = harry_potter[2]["title"]
+hp_reviews_neu["Rank 4"] = harry_potter[3]["title"]
+hp_reviews_neu["Rank 5"] = harry_potter[4]["title"]
+hp_reviews_neu["Rank 6"] = harry_potter[-3]["title"]
+hp_reviews_neu["Rank 7"] = harry_potter[-2]["title"]
+hp_reviews_neu["Rank 8"] = harry_potter[-1]["title"]
+
+harry_potter = sorted(harry_potter, key=lambda a: a["pos"], reverse=True)
+
+hp_reviews_pos = {}
+hp_reviews_pos["Rank 1"] = harry_potter[0]["title"]
+hp_reviews_pos["Rank 2"] = harry_potter[1]["title"]
+hp_reviews_pos["Rank 3"] = harry_potter[2]["title"]
+hp_reviews_pos["Rank 4"] = harry_potter[3]["title"]
+hp_reviews_pos["Rank 5"] = harry_potter[4]["title"]
+hp_reviews_pos["Rank 6"] = harry_potter[-3]["title"]
+hp_reviews_pos["Rank 7"] = harry_potter[-2]["title"]
+hp_reviews_pos["Rank 8"] = harry_potter[-1]["title"]
 
 
-# pprint.pprint(harry_potter)
-
-neg_list = []
-neu_list = []
-pos_list = []
-for title, sentiment in harry_potter:
-    neg_list.append({sentiment['neg']:title})
-    neu_list.append({sentiment['neu']:title})
-    pos_list.append({sentiment['pos']:title})
-
-neg_list_sorted = sorted(neg_list, key=lambda d: list(d.values())[0], reverse=True)
-neu_list_sorted = sorted(neu_list, key=lambda d: list(d.values())[0], reverse=True)
-pos_list_sorted = sorted(pos_list, key=lambda d: list(d.values())[0], reverse=True)
-
-print("Negative values sorted:", neg_list_sorted)
-print("Neutral values sorted:", neu_list_sorted)
-print("Positive values sorted:", pos_list_sorted)
-
-# print(hp1_score)
-
-# for xxx in h
-# pairs = [(score, sentiment) for sentiment, score in hp1_score.items()]
-# print (pairs)
+# Print Comparison Report
+def main():
+    print(
+        "\nHarry Potter Movies Actual Rankings vs Natural Language Processing Rankings of Review Sentiments:\n"
+        "\nActual IMDB Ranking:        Positive Review Sentiment Ranking:        Negative Review Sentiment Ranking (least):\n"
+        f"  {harry_potter_ranking[0][1]}                     {hp_reviews_pos['Rank 1']}                             {hp_reviews_neg['Rank 1']}\n"
+        f"  {harry_potter_ranking[1][1]}                     {hp_reviews_pos['Rank 2']}                             {hp_reviews_neg['Rank 2']}\n"
+        f"  {harry_potter_ranking[2][1]}                     {hp_reviews_pos['Rank 3']}                             {hp_reviews_neg['Rank 3']}\n"
+        f"  {harry_potter_ranking[3][1]}                     {hp_reviews_pos['Rank 4']}                             {hp_reviews_neg['Rank 4']}\n"
+        f"  {harry_potter_ranking[4][1]}                     {hp_reviews_pos['Rank 5']}                             {hp_reviews_neg['Rank 5']}\n"
+        f"  {harry_potter_ranking[-3][1]}                     {hp_reviews_pos['Rank 6']}                             {hp_reviews_neg['Rank 6']}\n"
+        f"  {harry_potter_ranking[-2][1]}                     {hp_reviews_pos['Rank 7']}                             {hp_reviews_neg['Rank 7']}\n"
+        f"  {harry_potter_ranking[-1][1]}                     {hp_reviews_pos['Rank 8']}                             {hp_reviews_neg['Rank 8']}\n"
+    )
 
 
-
-# d = dict()
-# for sentiment, score in hp1_score.items():
-#     for item in hp1_score.items():
-#         d[score] = sentiment
-# print (d)
-# print(sorted(d))
+if __name__ == "__main__":
+    main()
