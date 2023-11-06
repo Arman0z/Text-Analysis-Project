@@ -130,7 +130,7 @@ harry_potter = [
     hp8_score,
 ]
 
-# Sort movies in decending order based on each sentiment score
+# Sort movies in  decending order based on each sentiment score
 harry_potter = sorted(harry_potter, key=lambda a: a["neg"])
 
 hp_reviews_neg = {}
